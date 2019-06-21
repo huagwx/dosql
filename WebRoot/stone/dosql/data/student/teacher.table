@@ -1,0 +1,4 @@
+teacher||tea_id||integer||11
+teacher||tea_num||varchar||255
+teacher||tea_name||varchar||255
+teacher||tea_sex||varchar||20

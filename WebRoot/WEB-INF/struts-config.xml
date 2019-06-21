@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN" "http://struts.apache.org/dtds/struts-config_1_2.dtd">
+
+<struts-config>
+  <data-sources />
+  <form-beans >
+    <form-bean name="searchForm" type="com.stone.dosql.struts.form.SearchForm" />
+
+  </form-beans>
+
+  <global-exceptions />
+  <global-forwards />
+  <action-mappings >
+    <action
+      validate="true"
+      attribute="searchForm"
+      input="/dosql/search.jsp"
+      name="searchForm"
+      path="/search"
+      scope="request"
+      type="com.stone.dosql.struts.action.SearchAction">
+      <forward name="show" path="/dosql/search.jsp" />
+      <forward name="err" path="/dosql/err.jsp" />
+    </action>
+
+  </action-mappings>
+
+  <message-resources parameter="com.stone.dosql.struts.ApplicationResources" />
+</struts-config>
+

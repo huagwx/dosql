@@ -1,0 +1,3 @@
+course||cou_id||integer||11
+course||cou_num||varchar||255
+course||cou_name||varchar||255

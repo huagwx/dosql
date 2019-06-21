@@ -1,0 +1,5 @@
+score||sco_id||integer||11
+score||sco_stu_id||integer||255
+score||sco_tea_id||integer||255
+score||sco_cou_id||integer||255
+score||sco_score||double||20

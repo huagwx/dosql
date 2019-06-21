@@ -1,0 +1,594 @@
+
+//query_spec -> SELECT  select_result  table_exp  
+
+query_spec.value = select_result.value  table_exp.value
+query_spec.type = ResultSet
+
+//select_result -> opt_all_distinct  scalar_exp_commalist  
+
+select_result.value = opt_all_distinct.value  scalar_exp_commalist.value
+select_result.type = ResultSet
+
+//opt_all_distinct -> ALL  
+
+opt_all_distinct.value = ALL
+opt_all_distinct.type = ALL
+
+//opt_all_distinct -> DISTINCT  
+
+opt_all_distinct.value = DISTINCT
+opt_all_distinct.type = DISTINCT
+
+//opt_all_distinct -> ST_NULL_S  
+
+opt_all_distinct.value = ALL
+opt_all_distinct.type = ALL
+
+//parameter_ref -> ST_NULL_S  
+
+parameter_ref.value = ST_NULL_X
+parameter_ref.type = ST_NULL_X
+
+//parameter_ref -> IDENT  
+
+parameter_ref.value = IDENT.value
+parameter_ref.type = IDENT
+
+//parameter_ref -> AS  IDENT  
+
+parameter_ref.value = IDENT.value
+parameter_ref.type = IDENT
+
+//all_table_allcolumn -> *
+
+all_table_allcolumn.value = *.value
+all_table_allcolumn.type = List
+
+//scalar_exp_one -> scalar_exp  parameter_ref  
+
+scalar_exp_one.value = scalar_exp  parameter_ref.value
+scalar_exp_one.type = Column
+
+//scalar_exp_one -> all_table_allcolumn
+
+scalar_exp_one.value = all_table_allcolumn.value
+scalar_exp_one.type = List
+
+//................................
+
+
+//scalar_exp_commalist -> scalar_exp_one  scalar_exp_commalist1  
+
+scalar_exp_commalist1.inherit = scalar_exp_one.value || scalar_exp_commalist.value = scalar_exp_commalist1.result
+scalar_exp_commalist.type = List 
+
+
+//scalar_exp_commalist1 -> ,  scalar_exp_one  scalar_exp_commalist1  
+
+scalar_exp_commalist1.inherit = scalar_exp_commalist1.inherit add scalar_exp_one.value || scalar_exp_commalist1.result = scalar_exp_commalist1.result
+scalar_exp_commalist1.type = List 
+
+
+//scalar_exp_commalist1 -> ST_NULL_S  
+
+scalar_exp_commalist1.result = scalar_exp_commalist1.result
+scalar_exp_commalist1.type = List
+
+
+//................................
+
+
+//OPERATOR -> +  
+
+OPERATOR.value = +
+OPERATOR.type = +
+
+//OPERATOR -> -  
+
+OPERATOR.value = -
+OPERATOR.type = -
+
+//OPERATOR1 -> *  
+
+OPERATOR.value = *
+OPERATOR.type = *
+
+//OPERATOR1 -> /  
+
+OPERATOR.value = /
+OPERATOR.type = /
+
+//atom -> '  STRINGCONST  '  
+
+atom.value = STRINGCONST.value
+atom.type = STRINGCONST
+
+//atom -> "  STRINGCONST  "  
+
+atom.value = STRINGCONST.value
+atom.type = STRINGCONST
+
+//atom1 -> DIGITALCONST  
+
+atom.value = DIGITALCONST.value
+atom.type = DIGITALCONST
+
+//column_ref -> IDENT  column_ref1  
+
+column_ref.value = IDENT.value  column_ref1.value
+column_ref.type = IDENT
+
+//column_ref1 -> ST_NULL_S  
+
+column_ref1.value = ST_NULL_X
+column_ref1.type = IDENT
+
+//column_ref1 -> .  column_ref2  
+
+column_ref1.value = column_ref2.value
+column_ref1.type = IDENT
+
+//column_ref2 -> *  
+
+column_ref2.value = * 
+column_ref2.type = List
+
+//column_ref2 -> IDENT  
+
+column_ref2.value = IDENT.value
+column_ref2.type = IDENT
+
+//scalar_exp4 -> *  )  
+
+scalar_exp4.value = *.value
+scalar_exp4.type = List
+
+//scalar_exp4 -> scalar_exp  )  
+
+scalar_exp4.value = scalar_exp.value
+scalar_exp4.type = Scalar
+
+//scalar_exp7 -> ST_NULL_S  
+
+scalar_exp7.result = scalar_exp7.result
+scalar_exp7.type = Scalar
+
+//scalar_exp7 -> OPERATOR  scalar_exp5  scalar_exp7  
+
+scalar_exp7.inherit = scalar_exp7.inherit OPERATOR.value scalar_exp5.value || scalar_exp7.result = scalar_exp7.result
+scalar_exp7.type = Scalar
+
+//scalar_exp -> scalar_exp5  scalar_exp7  
+
+scalar_exp7.inherit = scalar_exp5.value || scalar_exp.value = scalar_exp7.result
+scalar_exp.type = Scalar
+
+//scalar_exp8 -> OPERATOR1  scalar_exp6  scalar_exp8  
+
+scalar_exp8.inherit = scalar_exp8.inherit OPERATOR1.value scalar_exp6.value || scalar_exp8.result = scalar_exp8.result
+scalar_exp8.type = Scalar
+
+//scalar_exp8 -> ST_NULL_S  
+
+scalar_exp8.result = scalar_exp8.result
+scalar_exp8.type = Scalar
+
+//scalar_exp5 -> scalar_exp6  scalar_exp8  
+
+scalar_exp8.inherit = scalar_exp6.value || scalar_exp5.value = scalar_exp8.result
+scalar_exp5.type = Scalar
+
+//scalar_exp6 -> +  scalar_exp9  
+
+scalar_exp6.value = scalar_exp9.value
+scalar_exp6.type = Scalar
+
+//scalar_exp6 -> -  scalar_exp9  
+
+scalar_exp6.value = - scalar_exp9.value
+scalar_exp6.type = Scalar
+
+//scalar_exp6 -> scalar_exp9  
+
+scalar_exp6.value = scalar_exp9.value
+scalar_exp6.type = Scalar
+
+//scalar_exp9 -> (  scalar_exp  )  
+
+scalar_exp9.value = scalar_exp.value
+scalar_exp9.type = Scalar
+
+
+
+
+//scalar_exp9 -> atom  
+
+scalar_exp9.value = atom.value
+scalar_exp9.type = Scalar
+
+
+//scalar_exp9 -> column_ref  
+
+scalar_exp9.value = column_ref.value
+scalar_exp9.type = Scalar  
+
+//scalar_exp9 -> FUNC ( func_exp
+
+scalar_exp9.value = FUNC.value func_exp.value
+scalar_exp9.type = Scalar
+
+//func_exp -> opt_all_distinct scalar_exp4
+
+
+func_exp.value = opt_all_distinct.value  scalar_exp4.value
+func_exp.type = List 
+
+//FUNC -> COUNT  
+
+FUNC.value = COUNT
+FUNC.type = COUNT
+
+//FUNC -> SUM  
+
+FUNC.value = SUM
+FUNC.type = SUM
+
+//FUNC -> AVG  
+
+FUNC.value = AVG
+FUNC.type = AVG
+
+//FUNC -> MAX  
+
+FUNC.value = MAX
+FUNC.type = MAX
+
+//FUNC -> MIN  
+
+FUNC.value = MIN
+FUNC.type = MIN
+
+//table_exp -> from_clause  opt_where_clause  opt_group_by_clause  opt_having_clause  opt_order_by_clause  
+
+table_exp.value = from_clause.value and opt_where_clause.value and opt_group_by_clause.value and opt_having_clause.value and opt_order_by_clause.value
+table_exp.type = List
+
+//from_clause -> FROM  table_ref_commalist  
+
+from_clause.value = table_ref_commalist.value
+from_clause.type = List
+
+//table_ref_one -> IDENT  parameter_ref  
+
+table_ref_one.value = IDENT.value  parameter_ref.value
+table_ref_one.type = Table
+
+//table_ref_commalist -> table_ref_one  table_ref_commalist1  
+
+table_ref_commalist1.inherit = table_ref_commalist1.inherit add table_ref_one.value || table_ref_commalist.value = table_ref_commalist1.result
+table_ref_commalist.type = List 
+
+//table_ref_commalist1 -> ST_NULL_S  
+
+table_ref_commalist1.result = table_ref_commalist1.inherit
+table_ref_commalist1.type = List
+
+
+//table_ref_commalist1 -> ,  table_ref_one  table_ref_commalist1  
+
+table_ref_commalist1.inherit = table_ref_commalist1.inherit add table_ref_one.value || table_ref_commalist1.result = table_ref_commalist1.result
+table_ref_commalist1.type = List
+
+//opt_where_clause -> WHERE  search_condition  
+
+opt_where_clause.value = search_condition.value
+opt_where_clause.type = List
+
+//opt_where_clause -> ST_NULL_S  
+
+opt_where_clause.value = ST_NULL_X
+opt_where_clause.type = List
+
+//opt_group_by_clause -> GROUP  BY  column_ref_commalist  
+
+opt_group_by_clause.value = column_ref_commalist.value
+opt_group_by_clause.type = List
+
+//opt_group_by_clause -> ST_NULL_S  
+
+opt_group_by_clause.value = ST_NULL_X
+opt_group_by_clause.type = List
+
+//column_ref_commalist -> column_ref  column_ref_commalist1  
+
+column_ref_commalist1.inherit = column_ref.value || column_ref_commalist.value = column_ref_commalist1.result
+column_ref_commalist.type = List
+
+//column_ref_commalist1 -> ST_NULL_S  
+
+column_ref_commalist1.result = column_ref_commalist1.result
+column_ref_commalist1.type = List
+
+//column_ref_commalist1 -> ,  column_ref  column_ref_commalist1  
+
+column_ref_commalist1.inherit = column_ref_commalist1.inherit add column_ref || column_ref_commalist1.result = column_ref_commalist1.result
+column_ref_commalist1.type = List
+
+//opt_having_clause -> HAVING  search_condition  
+
+opt_having_clause.value = search_condition.value
+opt_having_clause.type = List
+
+//opt_having_clause -> ST_NULL_S  
+
+opt_having_clause.value = ST_NULL_X
+opt_having_clause.type = List
+
+//COMPARISON -> =  
+
+COMPARISON.value = =
+COMPARISON.type = =
+
+//COMPARISON -> <>  
+
+COMPARISON.value = <>
+COMPARISON.type = <>
+
+//COMPARISON -> <  
+
+COMPARISON.value = <
+COMPARISON.type = <
+
+//COMPARISON -> >  
+
+COMPARISON.value = >
+COMPARISON.type = >
+
+//COMPARISON -> <=  
+
+COMPARISON.value = <=
+COMPARISON.type = <=
+
+//COMPARISON -> >=  
+
+COMPARISON.value = >=
+COMPARISON.type = >=
+
+//search_condition13 -> OR  search_condition11  search_condition13  
+
+search_condition13.inherit = search_condition13.inherit OR search_condition11.value || search_condition13.result = search_condition13.result
+search_condition13.type = Condition
+
+//search_condition -> search_condition11  search_condition13  
+
+search_condition13.inherit = search_condition11.value || search_condition.value = search_condition13.result
+search_condition13.type = Condition
+
+//search_condition13 -> ST_NULL_S  
+
+search_condition13.result = search_condition13.result
+search_condition13.type = Condition
+
+//search_condition14 -> AND  search_condition12  search_condition14  
+
+search_condition14.inherit = search_condition14.inherit AND search_condition12.value || search_condition14.result = search_condition14.result
+search_condition14.type = Condition
+
+//search_condition14 -> ST_NULL_S  
+
+search_condition14.result = search_condition14.result
+search_condition14.type = Condition
+
+//search_condition11 -> search_condition12  search_condition14  
+
+search_condition14.inherit = search_condition12.value || search_condition11.value = search_condition14.result
+search_condition11.type = Condition
+
+//search_condition12 -> NOT  search_condition15  
+
+search_condition12.value = NOT search_condition15.value
+search_condition12.type = Condition
+
+//search_condition12 -> search_condition15  
+
+search_condition12.value = search_condition15.value
+search_condition12.type = Condition
+
+//search_condition15 -> scalar_exp  search_condition1  
+
+search_condition1.inherit = scalar_exp.value || search_condition15.value = search_condition1.result
+search_condition15.type = Condition
+
+//search_condition15 -> search_condition9  
+
+search_condition15.value = search_condition9.value
+search_condition15.type = Condition
+
+//search_condition9 -> EXISTS  (  subquery  )  
+
+search_condition9.value = EXISTS subquery.value
+search_condition9.type = Condition
+
+//search_condition1 -> COMPARISON  search_condition8  
+
+search_condition8.inherit = search_condition1.inherit COMPARISON.value search_condition8.value || search_condition1.result = search_condition8.result
+search_condition1.type = Condition
+
+//search_condition1 -> NOT  search_condition7  
+
+search_condition7.inherit = search_condition1.inherit NOT search_condition7.value || search_condition1.result = search_condition7.result
+search_condition7.type = Condition
+
+//search_condition1 -> search_condition2  
+
+search_condition2.inherit = search_condition1.inherit || search_condition1.result = search_condition2.result
+search_condition1.type = Condition
+
+//search_condition1 -> search_condition3  
+
+search_condition3.inherit = search_condition1.inherit || search_condition1.result = search_condition3.result
+search_condition1.type = Condition
+
+//search_condition1 -> search_condition4  
+
+search_condition4.inherit = search_condition1.inherit || search_condition1.result = search_condition4.result
+search_condition1.type = Condition
+
+//search_condition1 -> IS  search_condition6  
+
+search_condition6.inherit = search_condition1.inherit IS || search_condition1.result = search_condition6.result
+search_condition1.type = Condition
+
+//search_condition2 -> BETWEEN  scalar_exp  AND  scalar_exp  
+
+search_condition2.inherit = search_condition2.inherit  BETWEEN  scalar_exp.value  AND  scalar_exp.value ||  search_condition2.result = search_condition2.inherit
+search_condition2.type = Condition
+
+
+//search_condition3 -> LIKE  atom  opt_escape  
+
+search_condition3.inherit = search_condition3.inherit LIKE  atom.value  opt_escape.value ||  search_condition3.result = search_condition3.inherit
+search_condition3.type = Condition
+
+//search_condition4 -> IN  (  search_condition5  
+
+search_condition5.inherit = search_condition4.inherit IN search_condition5.value || search_condition4.value = search_condition5.result
+search_condition4.type = Condition
+
+//search_condition5 -> subquery  )  
+
+search_condition5.inherit = search_condition4.inherit subquery.value || search_condition5.value = search_condition5.result
+search_condition5.type = Condition
+
+
+//search_condition5 -> atom_commalist  )  
+
+search_condition5.inherit = search_condition4.inherit atom_commalist.value || search_condition5.value = search_condition5.result
+search_condition5.type = Condition
+
+//search_condition6 -> NOT  NULL  
+
+search_condition6.inherit = search_condition6.inherit NOT NULL
+search_condition6.type = Condition
+
+//search_condition6 -> NULL  
+
+search_condition6.inherit = search_condition6.inherit  NULL
+search_condition6.type = Condition
+
+//search_condition7 -> search_condition2  
+
+search_condition2.inherit = search_condition7.inherit
+search_condition7.type = Condition
+
+//search_condition7 -> search_condition3  
+
+search_condition3.inherit = search_condition7.inherit
+search_condition7.type = Condition
+
+//search_condition7 -> search_condition4  
+
+search_condition4.inherit = search_condition7.inherit
+search_condition7.type = Condition
+
+//search_condition8 -> scalar_exp  
+
+search_condition8.inherit = search_condition8.inherit scalar_exp.value
+search_condition8.type = Condition
+
+//search_condition8 -> any_all_some  (  subquery  )  
+
+search_condition8.inherit = search_condition8.inherit any_all_some subquery.value
+search_condition8.type = Condition
+
+//opt_escape -> ESCAPE  atom  
+
+opt_escape.value = atom.value
+opt_escape.type = STRINGCONST
+
+//opt_escape -> ST_NULL_S  
+
+opt_escape.value = ST_NULL_X
+opt_escape.type = STRINGCONST
+
+//atom_commalist -> atom  atom_commalist1  
+
+atom_commalist1.inherit = atom.value || atom_commalist.value = atom_commalist1.result
+atom_commalist.type = List
+
+//atom_commalist1 -> ,  atom  atom_commalist1  
+
+atom_commalist1.inherit = atom_commalist1.inherit add atom.value || atom_commalist1.result = atom_commalist1.result
+atom_commalist1.type = List
+
+//atom_commalist1 -> ST_NULL_S  
+
+atom_commalist1.result = atom_commalist1.result
+atom_commalist1.type = List
+
+
+//any_all_some -> ANY  
+
+any_all_some.value = ANY
+any_all_some.type = ANY
+
+//any_all_some -> ALL  
+
+any_all_some.value = ALL
+any_all_some.type = ALL
+
+//any_all_some -> SOME  
+
+any_all_some.value = SOME
+any_all_some.type = SOME
+
+//subquery -> SELECT  select_result  table_exp  
+
+subquery.value = select_result.value and table_exp.value
+subquery.type = Result
+
+//opt_order_by_clause -> ORDER  BY  ordering_spec_commalist  
+
+opt_order_by_clause.value = ordering_spec_commalist.value
+opt_order_by_clause.type = List
+
+//opt_order_by_clause -> ST_NULL_S  
+
+opt_order_by_clause.value = ST_NULL_X
+opt_order_by_clause.type = List
+
+//ordering_spec_commalist -> ordering_spec  ordering_spec_commalist1  
+
+ordering_spec_commalist1.inherit = ordering_spec.value || ordering_spec_commalist.value = ordering_spec_commalist1.result
+ordering_spec_commalist.type = List
+
+//ordering_spec_commalist1 -> ST_NULL_S  
+
+ordering_spec_commalist1.result = ordering_spec_commalist1.result
+ordering_spec_commalist1.type = List
+
+//ordering_spec_commalist1 -> ,  ordering_spec  ordering_spec_commalist1  
+
+ordering_spec_commalist1.inherit = ordering_spec_commalist1.inherit add ordering_spec.value || ordering_spec_commalist1.result = ordering_spec_commalist1.result
+ordering_spec_commalist1.type = List 
+
+//ordering_spec -> column_ref  opt_asc_desc  
+
+ordering_spec.value = column_ref.value and opt_asc_desc.value
+ordering_spec.type = Order
+
+//opt_asc_desc -> ASC  
+
+opt_asc_desc.value = ASC
+opt_asc_desc.type = ASC
+
+//opt_asc_desc -> DESC  
+
+opt_asc_desc.value = DESC
+opt_asc_desc.type = DESC
+
+//opt_asc_desc -> ST_NULL_S  
+
+opt_asc_desc.value = ASC
+opt_asc_desc.type = ASC
+

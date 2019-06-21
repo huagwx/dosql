@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FlowViewLayout Version="1.2">
+  <StrutsActivity path="/search.do" location="195,15" dimension="298,84" />
+  <StrutsActivity path="/dosql/err.jsp" location="390,300" dimension="124,48" />
+  <StrutsActivity path="/dosql/search.jsp" location="720,120" dimension="142,48" />
+  <StrutsActivity path="/dosql/show.jsp" location="480,195" dimension="130,48" />
+  <StrutsTransition id="/dosql/search.jsp,null,/search.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="791,120" />
+      <AbsolutePoint location="791,57" />
+      <AbsolutePoint location="493,57" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/search.do,show,/dosql/search.jsp,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="344,99" />
+      <AbsolutePoint location="344,144" />
+      <AbsolutePoint location="720,144" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/search.do,err,/dosql/err.jsp,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="405,99" />
+      <AbsolutePoint location="405,300" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+</FlowViewLayout>
+

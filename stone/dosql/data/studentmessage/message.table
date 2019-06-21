@@ -1,0 +1,4 @@
+message||id||integer||11
+message||time||varchar||255
+message||userid||varchar||255
+message||message||test||10000

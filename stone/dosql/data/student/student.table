@@ -1,0 +1,5 @@
+student||stu_id||integer||11
+student||stu_num||varchar||255
+student||stu_name||varchar||255
+student||stu_department||varchar||50
+student||stu_sex||varchar||10

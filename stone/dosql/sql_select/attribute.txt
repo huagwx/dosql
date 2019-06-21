@@ -1,0 +1,214 @@
+query_spec -> SELECT opt_all_distinct scalar_exp_commalist table_exp
+
+query_spec.type=List
+
+//.............opt_all_distinct ..................
+opt_all_distinct -> ALL
+opt_all_distinct.type=ALL
+
+opt_all_distinct -> DISTINCT 
+opt_all_distinct.type=DISTINCT
+
+opt_all_distinct -> ST_NULL_S
+opt_all_distinct.type=ALL
+
+//........parameter_ref...................................................................
+parameter_ref -> ST_NULL_S
+parameter_ref.type
+
+parameter_ref -> IDENT
+parameter_ref.
+
+parameter_ref -> AS IDENT
+parameter_ref.
+
+
+//...........
+//.........递归........
+scalar_exp_commalist -> * scalar_exp_commalist1
+scalar_exp_commalist -> scalar_exp parameter_ref scalar_exp_commalist1
+scalar_exp_commalist1 -> , scalar_exp parameter_ref  scalar_exp_commalist1
+scalar_exp_commalist1 -> ST_NULL_S
+
+
+OPERATOR -> +
+OPERATOR -> -
+OPERATOR1 -> *
+OPERATOR1 -> /
+
+atom -> ' STRINGCONST '
+atom -> " STRINGCONST "
+atom1 -> DIGITALCONST
+
+
+column_ref -> IDENT column_ref1
+column_ref1 -> ST_NULL_S
+column_ref1 -> . column_ref2
+column_ref2 ->  *
+column_ref2 ->  IDENT
+
+
+
+scalar_exp4 -> * )
+scalar_exp4 -> DISTINCT scalar_exp )
+scalar_exp4 -> ALL scalar_exp )
+scalar_exp4 -> scalar_exp )
+
+
+//消除二义性 * , /的优先级别大于 + , - 都是左结合的
+scalar_exp7 -> ST_NULL_S
+scalar_exp7 -> OPERATOR scalar_exp5 scalar_exp7
+scalar_exp -> scalar_exp5 scalar_exp7
+
+//......递归...
+scalar_exp8 -> OPERATOR1 scalar_exp6 scalar_exp8
+scalar_exp8 -> ST_NULL_S
+scalar_exp5 -> scalar_exp6 scalar_exp8
+
+
+scalar_exp6 -> + scalar_exp9  
+scalar_exp6 -> - scalar_exp9 
+scalar_exp6 -> scalar_exp9
+
+scalar_exp9 -> ( scalar_exp ) 
+
+
+
+scalar_exp9 -> atom 
+scalar_exp9 -> atom1 
+scalar_exp9 -> column_ref
+scalar_exp9 -> FUNC ( scalar_exp4 
+
+
+
+
+FUNC -> COUNT
+FUNC -> SUM
+FUNC -> AVG
+FUNC -> MAX
+FUNC -> MIN
+
+
+table_exp -> from_clause opt_where_clause opt_group_by_clause opt_having_clause opt_order_by_clause
+
+from_clause -> FROM table_ref_commalist
+
+//......递归......
+table_ref_commalist -> IDENT parameter_ref        table_ref_commalist1
+table_ref_commalist1 -> ST_NULL_S
+table_ref_commalist1 -> , IDENT parameter_ref     table_ref_commalist1
+
+
+opt_where_clause -> WHERE search_condition
+opt_where_clause -> ST_NULL_S
+
+opt_group_by_clause -> GROUP BY column_ref_commalist
+opt_group_by_clause -> ST_NULL_S
+
+
+//...递归
+column_ref_commalist -> column_ref column_ref_commalist1
+column_ref_commalist1 -> ST_NULL_S
+column_ref_commalist1 ->  , column_ref column_ref_commalist1
+
+
+
+opt_having_clause -> HAVING search_condition
+opt_having_clause -> ST_NULL_S
+
+//比较符号
+COMPARISON -> =
+COMPARISON -> <>
+COMPARISON -> <
+COMPARISON -> >
+COMPARISON -> <=
+COMPARISON -> >=
+
+
+
+
+//search_condition -> search_condition OR search_condition11
+search_condition13 -> OR  search_condition11 search_condition13
+search_condition -> search_condition11 search_condition13
+search_condition13 -> ST_NULL_S
+
+//search_condition11 -> search_condition11 AND search_condition12
+search_condition14 ->  AND search_condition12 search_condition14
+search_condition14 -> ST_NULL_S
+search_condition11 -> search_condition12 search_condition14
+
+
+
+search_condition12 -> NOT search_condition15    
+search_condition12 -> search_condition15        
+           
+
+// (   相同???????????????????????  search_condition15不加入括号...   ???????????????
+//search_condition15 -> ( search_condition )  
+search_condition15 -> scalar_exp search_condition1 
+       
+search_condition15 -> search_condition9 
+
+search_condition9 -> EXISTS ( subquery )
+search_condition1 -> COMPARISON search_condition8
+search_condition1 -> NOT search_condition7
+search_condition1 -> search_condition2
+search_condition1 -> search_condition3
+search_condition1 -> search_condition4 
+search_condition1 -> IS search_condition6
+search_condition2 -> BETWEEN scalar_exp AND scalar_exp
+search_condition3 -> LIKE atom opt_escape
+search_condition4 -> IN ( search_condition5
+search_condition5 -> subquery ) 
+search_condition5 -> atom_commalist )
+search_condition6 -> NOT NULL
+search_condition6 -> NULL
+search_condition7 -> search_condition2
+search_condition7 -> search_condition3
+search_condition7 -> search_condition4
+search_condition8 -> scalar_exp 
+search_condition8 -> any_all_some ( subquery )
+
+
+
+opt_escape -> ESCAPE atom
+opt_escape -> ST_NULL_S
+
+//...递归
+atom_commalist -> atom  atom_commalist1
+//atom_commalist -> atom_commalist , atom
+atom_commalist1 -> ,  atom atom_commalist1
+atom_commalist1 -> ST_NULL_S
+
+
+any_all_some -> ANY
+any_all_some -> ALL
+any_all_some -> SOME
+
+
+subquery ->  SELECT opt_all_distinct scalar_exp_commalist table_exp 
+
+
+
+opt_order_by_clause -> ORDER BY ordering_spec_commalist
+opt_order_by_clause -> ST_NULL_S
+
+//......递归.....opt_asc_desc和 ordering_spec_commalist1都推导出  ST_NULL_S
+
+ordering_spec_commalist -> ordering_spec ordering_spec_commalist1
+//ordering_spec_commalist -> ordering_spec_commalist , ordering_spec
+ordering_spec_commalist1 -> ST_NULL_S
+ordering_spec_commalist1 -> , ordering_spec ordering_spec_commalist1
+
+ordering_spec -> column_ref opt_asc_desc
+
+opt_asc_desc -> ASC
+opt_asc_desc -> DESC
+opt_asc_desc -> ST_NULL_S
+
+
+
+
+
+
+

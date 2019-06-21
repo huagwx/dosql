@@ -1,0 +1,4 @@
+user||id||integer||11
+user||name||varchar||255
+user||score||integer||11
+user||message||test||10000

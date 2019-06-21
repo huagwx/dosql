@@ -1,0 +1,459 @@
+//query_spec -> SELECT  opt_all_distinct  scalar_exp_commalist  table_exp  
+
+query_spec.value = list
+
+//opt_all_distinct -> ALL  
+
+opt_all_distinct.type = all
+
+//opt_all_distinct -> DISTINCT  
+
+opt_all_distinct.type = distinct
+
+//opt_all_distinct -> ST_NULL_S  
+
+opt_all_distinct.type = all
+
+//parameter_ref -> ST_NULL_S  
+
+parameter_ref.value = st_null_x
+
+//parameter_ref -> IDENT  
+
+parameter_ref.value = IDENT.value
+
+//parameter_ref -> AS  IDENT  
+
+parameter_ref.value = IDENT.value
+
+//scalar_exp_commalist -> *  scalar_exp_commalist1  
+
+scalar_exp_commalist.type = *.value and scalar_exp_commalist.value=scalar_exp_commalist1.s
+
+//scalar_exp_commalist -> scalar_exp  parameter_ref  scalar_exp_commalist1  
+
+scalar_exp_commalist.type = list
+
+//scalar_exp_commalist1 -> ,  scalar_exp  parameter_ref  scalar_exp_commalist1  
+
+scalar_exp_commalist1.type = scalarlist
+
+//scalar_exp_commalist1 -> ST_NULL_S  
+
+scalar_exp_commalist1.type = st_null_x
+
+//OPERATOR -> +  
+
+OPERATOR.type = +
+
+//OPERATOR -> -  
+
+OPERATOR.type = -
+
+//OPERATOR1 -> *  
+
+OPERATOR1.type = *
+
+//OPERATOR1 -> /  
+
+OPERATOR1.type = /
+
+//atom -> '  STRINGCONST  '  
+
+atom.value = stringconst
+
+//atom -> "  STRINGCONST  "  
+
+atom.value = stringconst
+
+//atom1 -> DIGITALCONST  
+
+atom1.value = digitalconst
+
+//column_ref -> IDENT  column_ref1  
+//在语义分析中 验证ident是table或column
+
+column_ref.value = ident   
+
+//column_ref1 -> ST_NULL_S  
+
+column_ref1.value = st_null_x
+
+//column_ref1 -> .  column_ref2  
+
+column_ref1.value = column
+
+//column_ref2 -> *  
+
+column_ref2.value = allcolumn
+
+//column_ref2 -> IDENT  
+
+column_ref2.value = column
+
+//scalar_exp4 -> *  )  
+
+scalar_exp4.type = allcolumn
+
+//scalar_exp4 -> DISTINCT  scalar_exp  )  
+
+scalar_exp4.type = distinctscalar
+
+//scalar_exp4 -> ALL  scalar_exp  )  
+
+scalar_exp4.type = allscalar
+
+//scalar_exp4 -> scalar_exp  )  
+
+scalar_exp4.type = allscalar
+
+//scalar_exp7 -> ST_NULL_S  
+
+scalar_exp7.type = st_null_x
+
+//scalar_exp7 -> OPERATOR  scalar_exp5  scalar_exp7  
+
+scalar_exp7.value = num
+
+//scalar_exp -> scalar_exp5  scalar_exp7  
+
+scalar_exp.value = num
+
+//scalar_exp8 -> OPERATOR1  scalar_exp6  scalar_exp8  
+
+scalar_exp8.value = num
+
+//scalar_exp8 -> ST_NULL_S  
+
+scalar_exp8.value = st_null_x
+
+//scalar_exp5 -> scalar_exp6  scalar_exp8  
+
+scalar_exp5.value = num
+
+//scalar_exp6 -> +  scalar_exp9  
+
+scalar_exp6.value = num
+
+//scalar_exp6 -> -  scalar_exp9  
+
+scalar_exp6.value = num
+
+//scalar_exp6 -> scalar_exp9  
+
+scalar_exp6.value = num
+
+//scalar_exp9 -> (  scalar_exp  )  
+
+scalar_exp9.value = num
+
+//scalar_exp9 -> atom  
+
+scalar_exp9.type = atom
+
+//scalar_exp9 -> atom1  
+
+scalar_exp9.type = atom1
+
+//scalar_exp9 -> column_ref  
+
+scalar_exp9.type = column_ref
+
+//scalar_exp9 -> FUNC  (  scalar_exp4  
+
+scalar_exp9.type = func
+
+//FUNC -> COUNT  
+
+FUNC.type = count
+
+//FUNC -> SUM  
+
+FUNC.type = sum
+
+//FUNC -> AVG  
+
+FUNC.type = avg
+
+//FUNC -> MAX  
+
+FUNC.type = max
+
+//FUNC -> MIN  
+
+FUNC.type = min
+
+//table_exp -> from_clause  opt_where_clause  opt_group_by_clause  opt_having_clause  opt_order_by_clause  
+
+table_exp.type = st_null_x
+
+
+
+//from_clause -> FROM  table_ref_commalist  
+
+from_clause.type = tablelist
+
+
+//table_ref_commalist -> IDENT  parameter_ref  table_ref_commalist1  
+
+table_ref_commalist.type = tablelist
+
+
+//table_ref_commalist1 -> ST_NULL_S  
+
+table_ref_commalist1.type = st_null_x
+
+//table_ref_commalist1 -> ,  IDENT  parameter_ref  table_ref_commalist1  
+
+table_ref_commalist1.type = tablelist
+
+
+
+//opt_where_clause -> WHERE  search_condition  
+
+opt_where_clause.type = condition
+
+//opt_where_clause -> ST_NULL_S  
+
+opt_where_clause.type = st_null_x
+
+//opt_group_by_clause -> GROUP  BY  column_ref_commalist  
+
+opt_group_by_clause.type = orderlist
+
+//opt_group_by_clause -> ST_NULL_S  
+
+opt_group_by_clause.type = st_null_x
+
+//column_ref_commalist -> column_ref  column_ref_commalist1  
+
+column_ref_commalist.type = orderlist
+
+//column_ref_commalist1 -> ST_NULL_S  
+
+column_ref_commalist1.type = st_null_x
+
+//column_ref_commalist1 -> ,  column_ref  column_ref_commalist1  
+
+column_ref_commalist1.type = orderlist
+
+//opt_having_clause -> HAVING  search_condition  
+
+opt_having_clause.type = conditionlist
+
+//opt_having_clause -> ST_NULL_S  
+
+opt_having_clause.type = st_null_x
+
+//COMPARISON -> =  
+
+COMPARISON.type = =
+
+//COMPARISON -> <>  
+
+COMPARISON.type = <>
+
+//COMPARISON -> <  
+
+COMPARISON.type = <
+
+//COMPARISON -> >  
+
+COMPARISON.type = >
+
+//COMPARISON -> <=  
+
+COMPARISON.type = <=
+
+//COMPARISON -> >=  
+
+COMPARISON.type = >=
+
+//search_condition13 -> OR  search_condition11  search_condition13  
+
+search_condition13.value = boolean
+
+//search_condition -> search_condition11  search_condition13  
+
+search_condition.value = boolean
+
+//search_condition13 -> ST_NULL_S  
+
+search_condition13.value = st_null_x
+
+//search_condition14 -> AND  search_condition12  search_condition14  
+
+search_condition14.value = boolean
+
+//search_condition14 -> ST_NULL_S  
+
+search_condition14.value = st_null_x
+
+//search_condition11 -> search_condition12  search_condition14  
+
+search_condition11.value = st_null_x
+
+//search_condition12 -> NOT  search_condition15  
+
+search_condition12.value = boolean
+
+//search_condition12 -> search_condition15  
+
+search_condition12.value = boolean
+
+//search_condition15 -> scalar_exp  search_condition1  
+
+search_condition15.value = boolean
+
+//search_condition15 -> search_condition9  
+
+search_condition15.value = boolean
+
+//search_condition9 -> EXISTS  (  subquery  )  
+
+search_condition9.value = boolean
+
+//search_condition1 -> COMPARISON  search_condition8  
+
+search_condition1.value = boolean
+
+//search_condition1 -> NOT  search_condition7  
+
+search_condition1.value = boolean
+
+//search_condition1 -> search_condition2  
+
+search_condition1.value = boolean
+
+//search_condition1 -> search_condition3  
+
+search_condition1.value = boolean
+
+//search_condition1 -> search_condition4  
+
+search_condition1.value = boolean
+
+//search_condition1 -> IS  search_condition6  
+
+search_condition1.value = boolean
+
+//search_condition2 -> BETWEEN  scalar_exp  AND  scalar_exp  
+
+search_condition2.value = boolean
+
+//search_condition3 -> LIKE  atom  opt_escape  
+
+search_condition3.value = boolean
+
+//search_condition4 -> IN  (  search_condition5  
+
+search_condition4.value = boolean
+
+//search_condition5 -> subquery  )  
+
+search_condition5.type = resultset
+
+//search_condition5 -> atom_commalist  )  
+
+search_condition5.type = atomlist
+
+//search_condition6 -> NOT  NULL  
+
+search_condition6.type = notnull
+
+//search_condition6 -> NULL  
+
+search_condition6.type = null
+
+//search_condition7 -> search_condition2  
+
+search_condition7.value = boolean 
+
+//search_condition7 -> search_condition3  
+
+search_condition7.value = boolean 
+
+//search_condition7 -> search_condition4  
+
+search_condition7.value = boolean 
+
+//search_condition8 -> scalar_exp  
+
+search_condition8.value = boolean 
+
+//search_condition8 -> any_all_some  (  subquery  )  
+
+search_condition8.value = boolean 
+
+//opt_escape -> ESCAPE  atom  
+
+opt_escape.value = char
+
+//opt_escape -> ST_NULL_S  
+
+opt_escape.value = st_null_x
+
+//atom_commalist -> atom  atom_commalist1  
+
+atom_commalist.type = atomlist
+
+//atom_commalist1 -> ,  atom  atom_commalist1  
+
+atom_commalist1.type = atomlist
+
+//atom_commalist1 -> ST_NULL_S  
+
+atom_commalist1.type = st_null_x
+
+//any_all_some -> ANY  
+
+any_all_some.type = any
+
+//any_all_some -> ALL  
+
+any_all_some.type = all
+
+//any_all_some -> SOME  
+
+any_all_some.type = some
+
+//subquery -> SELECT  opt_all_distinct  scalar_exp_commalist  table_exp  
+
+subquery.type = resultset
+
+//opt_order_by_clause -> ORDER  BY  ordering_spec_commalist  
+
+opt_order_by_clause.type = orderbylist
+
+//opt_order_by_clause -> ST_NULL_S  
+
+opt_order_by_clause.type = st_null_x
+
+//ordering_spec_commalist -> ordering_spec  ordering_spec_commalist1  
+
+ordering_spec_commalist.type = orderbylist
+
+//ordering_spec_commalist1 -> ST_NULL_S  
+
+ordering_spec_commalist1.type = st_null_x
+
+//ordering_spec_commalist1 -> ,  ordering_spec  ordering_spec_commalist1  
+
+ordering_spec_commalist1.type = orderbylist
+
+//ordering_spec -> column_ref  opt_asc_desc  
+
+ordering_spec.type = orderby
+
+//opt_asc_desc -> ASC  
+
+opt_asc_desc.type = asc
+
+//opt_asc_desc -> DESC  
+
+opt_asc_desc.type = desc
+
+//opt_asc_desc -> ST_NULL_S  
+
+opt_asc_desc.type = st_null_x
+

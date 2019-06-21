@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-module
+  type="WEB"
+  name="dosql"
+  id="myeclipse.1213011896218"
+  context-root="/dosql"
+  j2ee-spec="5.0"
+  archive="dosql.war">
+  <attributes>
+    <attribute name="webrootdir" value="WebRoot" />
+  </attributes>
+</project-module>
+

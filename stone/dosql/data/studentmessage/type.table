@@ -1,0 +1,3 @@
+type||id||integer||11
+type||type_name||varchar||255
+type||type_message||varchar||255
